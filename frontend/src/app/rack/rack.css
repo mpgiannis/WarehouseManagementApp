@@ -1,0 +1,25 @@
+.btn-table-style{
+  background-color: white;
+  border: 1px solid #dee2e6;  
+  color: #212529;
+  padding: 0.25rem 0.5rem;
+  line-height: 1;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-table-style:hover,
+.btn-table-style:focus{
+  background-color: rgba(33, 37, 41, 0.075);  
+  border-color: #dee2e6;
+  color: #212529;
+  box-shadow: none;
+}
+
+
+.ie{
+  padding: 0.4rem 1.2rem;
+  font-weight: 500;
+  border-radius: 0.5rem; 
+  font-size: 1rem;
+}

@@ -1,0 +1,21 @@
+
+<div class="center-container">
+  <div class="warehouse-grid">
+    <div 
+      class="card" 
+      style="width: 16rem; cursor: pointer;" 
+      *ngFor="let warehouse of warehouses" 
+      (click)="goToWarehouse(warehouse)"
+    >
+      <img 
+        [src]="'http://localhost:8080/' + warehouse.imageUrl" 
+        class="card-img-top" 
+        alt="{{ warehouse.name }}"
+      >
+      <div class="card-body">
+        <h5 class="card-title">{{ warehouse.name }}</h5>
+        <p class="card-text">{{ warehouse.description }}</p>
+      </div>
+    </div>
+  </div>
+</div>

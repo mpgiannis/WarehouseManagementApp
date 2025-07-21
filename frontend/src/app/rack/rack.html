@@ -1,0 +1,92 @@
+<div class="rack-products-container">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Products for this rack</h2>
+    <button class="btn btn-table-style" (click)="openEditRackModal()" aria-label="Edit rack">
+      <img src="assets/bootstrap-icons/pencil.svg" alt="Edit" style="width: 1em; height: 1em;">
+    </button>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="table table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Barcode</th>
+          <th>Measure Unit</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td>{{ product.name }}</td>
+          <td>{{ product.description }}</td>
+          <td>{{ product.barcode }}</td>
+          <td>{{ product.measureUnit }}</td>
+          <td>0</td> 
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="d-flex justify-content-center mt-3 gap-3">
+    <button class="btn btn-table-style ie " (click)="openImportModal()">+ Import</button>
+    <button class="btn btn-table-style ie " (click)="exportProduct()">− Export</button>
+  </div>
+</div>
+
+
+<!-- Import Modal -->
+<div class="modal fade" id="importProductModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="importModalLabel">Import Products</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+
+       
+
+        <!-- Dynamic Product Rows -->
+        <div *ngFor="let entry of importEntries; let i = index" class="row g-2 align-items-center mb-2">
+          <div class="col-7">
+            <select class="form-select" [(ngModel)]="entry.productId" [ngModelOptions]="{standalone: true}">
+              <option [value]="null" disabled>Select Product</option>
+              <option *ngFor="let product of allProducts" [value]="product.id">{{ product.name }}</option>
+            </select>
+          </div>
+          <div class="col-3">
+            <input type="number" class="form-control" [(ngModel)]="entry.amount" placeholder="Amount" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="col-2">
+            <button class="btn btn-danger" (click)="removeImportEntry(i)">×</button>
+          </div>
+        </div>
+
+        <button class="btn btn-outline-primary mb-2" (click)="addImportEntry()">+ Add another</button>
+
+         <!-- New Description Field -->
+        <div class="mb-3">
+          <label for="importDescription" class="form-label">Description</label>
+          <input id="importDescription" type="text" class="form-control" [(ngModel)]="importDescription">
+        </div>
+
+        <!-- New Received From Field -->
+        <div class="mb-3">
+          <label for="importReceivedFrom" class="form-label">Received From</label>
+          <input id="importReceivedFrom" type="text" class="form-control" [(ngModel)]="importReceivedFrom">
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-success" (click)="confirmImport()">Import</button>
+      </div>
+
+    </div>
+  </div>
+</div>

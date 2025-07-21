@@ -1,0 +1,58 @@
+.card-body {
+  height: 90px;           
+  position: relative;
+  overflow: hidden;
+  padding: 1rem;
+}
+
+.card-title,
+.card-text {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  right: 1rem;
+  margin: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card-title {
+  opacity: 1;
+  z-index: 2;
+}
+
+.card-text {
+  opacity: 0;
+  z-index: 1;
+}
+
+.card:hover .card-title {
+  opacity: 0;
+  z-index: 1;
+}
+
+.card:hover .card-text {
+  opacity: 1;
+  z-index: 2;
+}
+
+.card-img-top {
+  height: 160px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.warehouse-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3rem;
+}
+
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);              
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
+}
