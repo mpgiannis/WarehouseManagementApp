@@ -9,7 +9,6 @@ A Java-based backend application built with the Spring Framework and managed usi
 - Java 17 
 - Spring Boot 3.2.5  
 - Spring Data JPA   
-- MySQL  
 - MySQL Workbench  
 - Angular v20 
 - Node.js  
