@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mpgiannis.warehousemanagement.dao.ImportsExportsRepository;
+import com.mpgiannis.warehousemanagement.dao.StockRepository;
 import com.mpgiannis.warehousemanagement.dto.ImportsExportsDto;
 import com.mpgiannis.warehousemanagement.entity.ImportsExports;
 import com.mpgiannis.warehousemanagement.entity.Product;
 import com.mpgiannis.warehousemanagement.entity.Racks;
 import com.mpgiannis.warehousemanagement.entity.Reports;
+import com.mpgiannis.warehousemanagement.entity.Stock;
 
 @Service
 public class ImportsExportsServiceImpl implements ImportsExportsService{
@@ -24,6 +26,8 @@ public class ImportsExportsServiceImpl implements ImportsExportsService{
 		private ProductService productService;
 		@Autowired
 		private RacksService racksService;
+		@Autowired
+		private StockRepository stockRepository;
 
 
 		@Autowired
@@ -61,6 +65,19 @@ public class ImportsExportsServiceImpl implements ImportsExportsService{
 					    
 					if(rack!=null) {
 						importsExportsRepository.save(dtoToEntity(theImportsExportsDto));
+						  int delta = theImportsExportsDto.getAmount();
+			                if ("EXPORT".equalsIgnoreCase(report.getType())) {
+			                    delta = -delta;
+			                }
+
+			                // 4. Update or create Stock entry
+			                Stock stock = stockRepository.findByProduct(product)
+			                    .orElseGet(() -> new Stock(product, 0, rack));  // If no stock entry exists, create one
+
+			                stock.setQuantity(stock.getQuantity() + delta);
+
+			                // 5. Save updated stock
+			                stockRepository.save(stock);
 					    imex=theImportsExportsDto;
 					}
 					else {

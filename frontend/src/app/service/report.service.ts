@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Report {
-   id?: number;
+  id?: number;
   dateRep: string;
   type: string;
   descriptionReason: string;

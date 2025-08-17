@@ -24,4 +24,9 @@ export class RackService {
   getRackById(id: number): Observable<Rack> {
     return this.http.get<Rack>(`${this.apiUrl}/${id}`);
   }
+
+  updateRack(rack: Rack): Observable<Rack> {
+    return this.http.put<Rack>(`${this.apiUrl}/${rack.id}`, rack);
+  }
+ 
 }

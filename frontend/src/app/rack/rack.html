@@ -23,7 +23,7 @@
           <td>{{ product.description }}</td>
           <td>{{ product.barcode }}</td>
           <td>{{ product.measureUnit }}</td>
-          <td>0</td> 
+          <td>{{ product.quantity }}</td> 
         </tr>
       </tbody>
     </table>
@@ -31,7 +31,7 @@
 
   <div class="d-flex justify-content-center mt-3 gap-3">
     <button class="btn btn-table-style ie " (click)="openImportModal()">+ Import</button>
-    <button class="btn btn-table-style ie " (click)="exportProduct()">− Export</button>
+    <button class="btn btn-table-style ie " (click)="openExportModal()">− Export</button>
   </div>
 </div>
 
@@ -53,13 +53,13 @@
         <!-- Dynamic Product Rows -->
         <div *ngFor="let entry of importEntries; let i = index" class="row g-2 align-items-center mb-2">
           <div class="col-7">
-            <select class="form-select" [(ngModel)]="entry.productId" [ngModelOptions]="{standalone: true}">
+            <select class="form-select" [(ngModel)]="entry.productId" [ngModelOptions]="{standalone: true}" >
               <option [value]="null" disabled>Select Product</option>
               <option *ngFor="let product of allProducts" [value]="product.id">{{ product.name }}</option>
             </select>
           </div>
           <div class="col-3">
-            <input type="number" class="form-control" [(ngModel)]="entry.amount" placeholder="Amount" [ngModelOptions]="{standalone: true}">
+            <input type="number" class="form-control" [(ngModel)]="entry.amount" placeholder="Amount" [ngModelOptions]="{standalone: true}" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
           </div>
           <div class="col-2">
             <button class="btn btn-danger" (click)="removeImportEntry(i)">×</button>
@@ -85,6 +85,95 @@
       <div class="modal-footer">
         <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         <button class="btn btn-success" (click)="confirmImport()">Import</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Export Modal -->
+<div class="modal fade" id="exportProductModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="exportModalLabel">Export Products</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- Dynamic Product Rows -->
+        <div *ngFor="let entry of exportEntries; let i = index" class="row g-2 align-items-center mb-2">
+          <div class="col-7">
+            <select class="form-select" [(ngModel)]="entry.productId" [ngModelOptions]="{standalone: true}">
+              <option [value]="null" disabled>Select Product</option>
+              <!-- Use products that are in stock for this rack -->
+              <option *ngFor="let product of products" [value]="product.id">
+                {{ product.name }} (Available: {{ product.quantity }})
+              </option>
+            </select>
+          </div>
+          <div class="col-3">
+            <input type="number" class="form-control" [(ngModel)]="entry.amount" placeholder="Amount"
+                   [ngModelOptions]="{standalone: true}" min="0"
+                   [max]="getAvailableQuantity(entry.productId)"
+                   onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
+          </div>
+          <div class="col-2">
+            <button class="btn btn-danger" (click)="removeExportEntry(i)">×</button>
+          </div>
+        </div>
+
+        <button class="btn btn-outline-primary mb-2" (click)="addExportEntry()">+ Add another</button>
+
+        <!-- Description Field -->
+        <div class="mb-3">
+          <label for="exportDescription" class="form-label">Description</label>
+          <input id="exportDescription" type="text" class="form-control" [(ngModel)]="exportDescription">
+        </div>
+
+        <!-- Sent To Field -->
+        <div class="mb-3">
+          <label for="exportSentTo" class="form-label">Sent To</label>
+          <input id="exportSentTo" type="text" class="form-control" [(ngModel)]="exportSentTo">
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-warning" (click)="confirmExport()">Export</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Edit Rack Modal -->
+<div class="modal fade" id="editRackModal" tabindex="-1" aria-labelledby="editRackModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="editRackModalLabel">Edit Rack</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="rackDescription" class="form-label">Description</label>
+            <textarea class="form-control" id="rackDescription" [(ngModel)]="editableRack.description" name="rackDescription"></textarea>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="saveRack()">Save</button>
       </div>
 
     </div>

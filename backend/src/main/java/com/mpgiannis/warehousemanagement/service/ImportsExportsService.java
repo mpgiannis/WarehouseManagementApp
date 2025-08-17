@@ -24,6 +24,6 @@ public interface ImportsExportsService {
 	//public List<ImportsExports> findapothema(String date,int productId);
 	
 	//public List<ImExDto> searchImEx(ImExSearch search);
-	public List<ImportsExports> findByRackId(int rackId);
+	//public List<ImportsExports> findByRackId(int rackId);
 
 }
